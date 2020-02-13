@@ -9,7 +9,12 @@ TODO: Guide users through getting your code up and running on their own system. 
 4.	API references
 
 # Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+TODO: Describe and show how to build your code and run the tests.
+Application curretly builds from
+  GitHub via an Action that builds and deploys to https://bclausingwb.azurewebsites.net
+    This is under construction as it does deploy, but does not include updates.
+  DevOps via a pipeline
+    Pipeline is broken; probably needs to be deleted and rebuilt as the error is subscription key related.
 
 # Contribute
 TODO: Explain how other users and developers can contribute to make your code better. 
