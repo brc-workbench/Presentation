@@ -14,9 +14,9 @@ on:
       - master
 
 env:
-  AZURE_WEBAPP_NAME: bclausingwb      # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '2.2.108'           # set this to the dotnet version to use
+  AZURE_WEBAPP_NAME: bclausingwb              # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: './wwwroot'      # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '2.2.108'                   # set this to the dotnet version to use
 
 jobs:
   build-and-deploy:
@@ -28,8 +28,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-    - name: Build with dotnet
-      run: dotnet build --configuration Release
+    - name: Build and publish
+      run: dotnet publish --configuration Release --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
     - name: 'Deploy to Azure WebApp'
       uses: azure/webapps-deploy@v1
       with:
