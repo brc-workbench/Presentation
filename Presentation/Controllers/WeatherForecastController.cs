@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Presentation.ExternalRestApi;
+using SwaggerSpecs;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Presentation.Services;
 
 namespace Project.Presentation.Controllers
 {
@@ -12,24 +14,35 @@ namespace Project.Presentation.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
+        private readonly IWeatherService _weatherService;
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(IWeatherService weatherService, ILogger<WeatherForecastController> logger)
         {
+            _weatherService = weatherService;
             _logger = logger;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<WeatherForecast>> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get()
         {
-            var weatherForecastApi = new WeatherForecastApi();
+            _logger.LogInformation($"Begin GET/weatherforecast @ {DateTime.Now} FROM front-end application TO microservice");
+            IEnumerable<WeatherForecast> result;
 
-            return await weatherForecastApi.GetAllForecasts();
+            try
+            {
+                result = await _weatherService.GetAllForecasts();
+            }
+            catch (HttpRequestException ex)
+            {
+                return BadRequest(ex);
+            }
+
+            _logger.LogInformation($"End GET/weatherforecast @ {DateTime.Now} FROM front-end application TO microservice");
+
+            return Ok(result ?? new List<WeatherForecast>());
         }
     }
 }

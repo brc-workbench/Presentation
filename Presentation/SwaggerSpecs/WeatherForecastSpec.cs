@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 
-namespace Project.Presentation
+namespace SwaggerSpecs
 {
     public class WeatherForecast
     {
