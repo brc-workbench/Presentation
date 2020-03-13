@@ -1,5 +1,5 @@
 # Introduction 
-Angular based SPA.
+A dotnet core + Angular template project.
 
 # Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
